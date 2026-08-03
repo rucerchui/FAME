@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAME · Benchmarking Foundation & Large Language Models for Few-Shot Medical Image Segmentation</title>
+<meta name="description" content="FAME is a unified benchmark for few-shot medical image segmentation across specialists, SAM-based, CLIP-based, and MLLM-based methods, with 14,958 test samples over 7 anatomies and 9 modalities.">
+<meta property="og:title" content="FAME: Benchmarking Foundation & Large Language Models for Few-Shot Medical Image Segmentation">
+<meta property="og:description" content="A unified FS-MIS benchmark: 21 tasks, 19 datasets, 7 anatomies, 9 modalities, 40+ methods, dual metrics (Dice & Specificity).">
+<meta property="og:image" content="static/images/FAME_benchmark_dataset_overview.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container">
+    <div class="brand"><span class="dot"></span> FAME</div>
+    <div class="links">
+      <a href="#explorer">Explorer</a>
+      <a href="#abstract">Abstract</a>
+      <a href="#benchmark">Benchmark</a>
+      <a href="#methods">Methods</a>
+      <a href="#results">Results</a>
+      <a href="#leaderboard">Leaderboard</a>
+      <a href="#gallery">Analysis</a>
+      <a href="#bibtex">BibTeX</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container">
+    <div class="eyebrow">Few-Shot Medical Image Segmentation Benchmark</div>
+    <h1 class="title">FAME</h1>
+    <div class="fullname">Benchmarking <b>F</b>ound<b>A</b>tion and Large Language Models for Few-Shot <b>M</b>edical Image S<b>E</b>gmentation</div>
+    <div class="venue">arXiv 2607.27856</div>
+
+    <div class="authors">
+      Jinghong&nbsp;Liu<sup>*</sup>,&nbsp;
+      Yuchuan&nbsp;Deng<sup>*</sup>,&nbsp;
+      Fanping&nbsp;Liu,&nbsp;
+      Meng&nbsp;Huang,&nbsp;
+      Xirong&nbsp;Li<sup>&dagger;</sup>
+    </div>
+    <div class="affil">Renmin University of China</div>
+    <div class="note"><sup>*</sup>Equal contribution &nbsp;·&nbsp; <sup>&dagger;</sup>Corresponding author</div>
+
+    <div class="btns">
+      <a class="btn primary" href="https://arxiv.org/abs/2607.27856" target="_blank" rel="noopener"><span class="ic">📄</span> Paper</a>
+      <a class="btn" href="https://arxiv.org/pdf/2607.27856" target="_blank" rel="noopener"><span class="ic">📑</span> arXiv PDF</a>
+      <a class="btn" href="https://github.com/rucerchui" target="_blank" rel="noopener"><span class="ic">💻</span> Code</a>
+      <a class="btn hf" href="https://huggingface.co/datasets/Kimokcheon/FAME_benchmark" target="_blank" rel="noopener"><span class="ic">🤗</span> Dataset</a>
+    </div>
+
+    <!-- STAT STRIP -->
+    <div class="stats reveal">
+      <div class="stat"><div class="n" data-n="14958">0</div><div class="l">Test samples</div></div>
+      <div class="stat"><div class="n" data-n="21">0</div><div class="l">ROI tasks</div></div>
+      <div class="stat"><div class="n" data-n="19">0</div><div class="l">Source datasets</div></div>
+      <div class="stat"><div class="n" data-n="7">0</div><div class="l">Anatomies</div></div>
+      <div class="stat"><div class="n" data-n="9">0</div><div class="l">Modalities</div></div>
+      <div class="stat"><div class="n" data-n="40" data-suffix="+">0</div><div class="l">Methods</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- DATASET EXPLORER (interactive) -->
+<section class="section" id="explorer">
+  <div class="container">
+    <div class="eyebrow" style="text-align:center;display:block">Interactive</div>
+    <h2>Dataset Explorer</h2>
+    <p class="sub">Real support/query examples straight from the FAME release — one representative case per source dataset. Filter by anatomy or modality, then toggle each card between the raw image, the ground-truth overlay, and the isolated mask.</p>
+
+    <!-- controls -->
+    <div class="exp-controls reveal">
+      <div class="exp-filtergroup" id="organFilters" data-group="organ">
+        <span class="exp-flabel">Anatomy</span>
+        <button class="chip active" data-val="all">All</button>
+      </div>
+      <div class="exp-filtergroup" id="modalityFilters" data-group="modality">
+        <span class="exp-flabel">Modality</span>
+        <button class="chip active" data-val="all">All</button>
+      </div>
+      <div class="exp-viewtoggle" id="viewToggle">
+        <span class="exp-flabel">View</span>
+        <button class="vbtn active" data-view="overlay">Overlay</button>
+        <button class="vbtn" data-view="img">Image</button>
+        <button class="vbtn" data-view="mask">Mask</button>
+      </div>
+    </div>
+
+    <div class="exp-count reveal"><span id="expCount">19</span> datasets shown</div>
+
+    <!-- grid -->
+    <div class="explorer reveal" id="explorerGrid"></div>
+
+    <p class="cap" style="margin-top:16px">Overlay = ground-truth ROI (translucent fill + white contour) rendered in the anatomy colour. Foreground % is the share of pixels belonging to the target ROI in the shown slice; tiny-lesion cases (marked <span class="zoombadge">⤢ zoom</span>) are cropped around the ROI so the target stays visible. All samples are decoded directly from the public HuggingFace release.</p>
+  </div>
+</section>
+
+<!-- ABSTRACT -->
+<section class="section" id="abstract">
+  <div class="container">
+    <div class="eyebrow" style="text-align:center;display:block">Overview</div>
+    <h2>Abstract</h2>
+    <div class="abstract reveal">
+      <p class="lead">Few-shot medical image segmentation (FS-MIS) aims to segment novel regions of interest (ROIs) from a few annotated support examples. Despite rapid progress, existing FS-MIS solutions span diverse paradigms but are evaluated under inconsistent settings, leaving their relative effectiveness unclear.</p>
+      <p>We introduce <b>FAME</b>, a unified benchmark for evaluating FS-MIS solutions, covering <b>specialists</b>, <b>SAM-based</b>, <b>CLIP-based</b>, and <b>MLLM-based</b> methods. FAME contains <b>14,958 test samples</b> across <b>7 anatomical sites</b>, <b>9 imaging modalities</b>, and <b>14 ROI categories</b>, and evaluates models under zero-shot and ten-shot settings with additional assessment of target-absence recognition and generalization under covariate and semantic shifts.</p>
+      <p>Our evaluation reveals several findings. First, effective few-shot segmentation depends on how models exploit support examples: direct visual adaptation generally outperforms prompt-based strategies. Second, increasing support examples improves performance only when models can effectively utilize them. Third, semantic transfer remains substantially more challenging than imaging-domain adaptation, and strong localization ability does not necessarily imply reliable target-absence recognition.</p>
+    </div>
+  </div>
+</section>
+
+<!-- KEY FEATURES -->
+<section class="section tight" id="benchmark">
+  <div class="container">
+    <div class="eyebrow" style="text-align:center;display:block">Why FAME</div>
+    <h2>What Makes FAME Unique</h2>
+    <p class="sub">The first FS-MIS benchmark to compare four solution families head-to-head under a single protocol, with dual metrics that reward both accurate segmentation and correct target-absence rejection.</p>
+    <div class="grid f4 reveal">
+      <div class="card">
+        <div class="ico">🧩</div>
+        <h3>Four Families, One Protocol</h3>
+        <p>Specialists, SAM-based, CLIP-based, and MLLM-based methods evaluated on identical support/query episodes and pipeline.</p>
+      </div>
+      <div class="card">
+        <div class="ico">🎯</div>
+        <h3>Dual Metrics</h3>
+        <p>Dice for target-present overlap plus Specificity for target-absent rejection — exposing silent false-alarm behavior.</p>
+      </div>
+      <div class="card">
+        <div class="ico">🔀</div>
+        <h3>Zero / Few / OOD</h3>
+        <p>Zero-shot, ten-shot (5 fixed seeds), and out-of-distribution tests separating covariate and semantic shift.</p>
+      </div>
+      <div class="card">
+        <div class="ico">🏥</div>
+        <h3>Broad Coverage</h3>
+        <p>Brain, breast, colon, retina, lung, skin, thyroid across CT, MRI, OCT, ultrasound, dermoscopy, endoscopy, and more.</p>
+      </div>
+    </div>
+
+    <div class="families reveal" style="margin-top:34px">
+      <span class="fam"><span class="sw sam"></span> SAM-based</span>
+      <span class="fam"><span class="sw clip"></span> CLIP-based</span>
+      <span class="fam"><span class="sw mllm"></span> MLLM-based</span>
+      <span class="fam"><span class="sw spec"></span> Specialists &amp; in-context</span>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD FAMILIES -->
+<section class="section tight" id="methods">
+  <div class="container">
+    <div class="eyebrow" style="text-align:center;display:block">How they adapt</div>
+    <h2>Four Families, One Episode</h2>
+    <p class="sub">Every method sees the same K=10 support pairs and query — but each family exploits them through a fundamentally different interface. These are the exact adaptation schematics from the paper.</p>
+
+    <div class="mtabs reveal">
+      <button class="mtab active" data-fam="sam"><span class="sw sam"></span> SAM-based</button>
+      <button class="mtab" data-fam="clip"><span class="sw clip"></span> CLIP-based</button>
+      <button class="mtab" data-fam="mllm"><span class="sw mllm"></span> MLLM-based</button>
+      <button class="mtab" data-fam="spec"><span class="sw spec"></span> Specialists</button>
+    </div>
+
+    <div class="mpanels reveal">
+      <div class="mpanel active" data-fam="sam">
+        <div class="mfig"><img src="static/images/fame_family_sam.jpg" alt="SAM-based adaptation"></div>
+        <div class="mdesc">
+          <h3>SAM-based</h3>
+          <p>Promptable segmentation backbones (SAM / MedSAM3) are steered with geometric prompts — points, boxes, or a coarse mask — derived from the support set. Adaptation lives in the prompt/interface layer or a lightweight detector, keeping the mask decoder frozen. Delivers the sharpest boundaries and the top Dice (MedSAM3, 0.683).</p>
+        </div>
+      </div>
+      <div class="mpanel" data-fam="clip">
+        <div class="mfig"><img src="static/images/fame_family_clip.jpg" alt="CLIP-based adaptation"></div>
+        <div class="mdesc">
+          <h3>CLIP-based</h3>
+          <p>A frozen CLIP ViT encodes dense patch features while learnable prompt tokens + the text encoder produce a class embedding; their similarity map becomes the mask. LoRA adaptation of this pathway yields the strongest target-absence Specificity (ProxyCLIP-LoRA, 0.755) — it abstains when the ROI is truly absent.</p>
+        </div>
+      </div>
+      <div class="mpanel" data-fam="mllm">
+        <div class="mfig"><img src="static/images/fame_family_mllm.jpg" alt="MLLM-based adaptation"></div>
+        <div class="mdesc">
+          <h3>MLLM-based</h3>
+          <p>A vision encoder feeds visual tokens to an LLM that emits either a built-in <code>&lt;SEG&gt;</code> token decoded to a mask, or a plug-in attention map routed to a mask head. Powerful but prompt-sensitive: how the MLLM is adapted matters more than which backbone is used.</p>
+        </div>
+      </div>
+      <div class="mpanel" data-fam="spec">
+        <div class="mfig"><img src="static/images/fame_family_spec.jpg" alt="Specialist / in-context adaptation"></div>
+        <div class="mdesc">
+          <h3>Specialists &amp; in-context</h3>
+          <p>Purpose-built few-shot segmenters (UniverSeg, Tyche) and in-context networks match query features against support features through cross/matching blocks — direct visual adaptation with no text or prompt engineering. Consistent mid-pack Dice with tight, predictable variance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS / FIGURES -->
+<section class="section" id="results">
+  <div class="container">
+    <div class="eyebrow" style="text-align:center;display:block">Analysis</div>
+    <h2>Key Results</h2>
+    <p class="sub">A consistent story across anatomies, support budgets, and distribution shifts.</p>
+
+    <div class="figrow reveal" style="margin-bottom:44px">
+      <div class="figwrap"><img src="static/images/fame_kshot_dice_trend.png" alt="K-shot Dice trend"></div>
+      <div class="figtext">
+        <span class="pill">Support budget</span>
+        <h3>More shots help — only if the model can use them</h3>
+        <p>As the support budget grows from K=1 to K=10, methods that genuinely exploit visual support cues improve steadily, while prompt-based and text-driven approaches plateau. The gain from additional annotated masks is far from uniform across families.</p>
+      </div>
+    </div>
+
+    <div class="figrow reveal" style="margin-bottom:44px">
+      <div class="figtext">
+        <span class="pill">Dice vs. Specificity</span>
+        <h3>Good localization ≠ reliable rejection</h3>
+        <p>Plotting Dice against Specificity shows the two abilities are largely decoupled: several methods that segment present targets well produce false-positive masks when the ROI is absent, underscoring why a single overlap metric is insufficient for clinical reliability.</p>
+      </div>
+      <div class="figwrap"><img src="static/images/fame_iid_dice_spe_scatter.png" alt="Dice vs Specificity scatter"></div>
+    </div>
+
+    <div class="figrow reveal">
+      <div class="figwrap"><img src="static/images/fame_few_shot_organ_dice_heatmap.png" alt="Per-organ few-shot Dice heatmap"></div>
+      <div class="figtext">
+        <span class="pill">Per-anatomy</span>
+        <h3>No single family wins everywhere</h3>
+        <p>Performance varies strongly across anatomies even within one family, which is why FAME reports task-level macro-averages rather than case-level aggregation that would let large datasets dominate the score.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEADERBOARD -->
+<section class="section tight" id="leaderboard">
+  <div class="container">
+    <div class="eyebrow" style="text-align:center;display:block">Ten-shot (K=10)</div>
+    <h2>Leaderboard</h2>
+    <p class="sub">Benchmark-level average Dice and Specificity in the few-shot mode. Full per-anatomy and per-dataset breakdowns are in the paper and supplementary material.</p>
+    <div class="tablewrap reveal">
+      <table class="board mono">
+        <thead>
+          <tr><th>Method</th><th>Family</th><th>Avg Dice ↑</th><th>Avg Spe. ↑</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rowtop"><td><span class="tag" style="background:#5b8cff"></span>MedSAM3</td><td>SAM-based</td><td class="best">0.683</td><td>0.046</td></tr>
+          <tr><td><span class="tag" style="background:#22d3ee"></span>MaskCLIP-LoRA</td><td>CLIP-based</td><td>0.488</td><td>0.677</td></tr>
+          <tr><td><span class="tag" style="background:#22d3ee"></span>ProxyCLIP-LoRA</td><td>CLIP-based</td><td>0.465</td><td class="best">0.755</td></tr>
+          <tr><td><span class="tag" style="background:#22d3ee"></span>SCLIP-LoRA</td><td>CLIP-based</td><td>0.460</td><td>0.737</td></tr>
+          <tr><td><span class="tag" style="background:#ff6a8b"></span>MedPLIB-7B-LoRA</td><td>MLLM-based</td><td>0.445</td><td>0.010</td></tr>
+          <tr><td><span class="tag" style="background:#34d399"></span>Tyche</td><td>Specialist</td><td>0.432</td><td>0.191</td></tr>
+          <tr><td><span class="tag" style="background:#34d399"></span>UniverSeg</td><td>Specialist</td><td>0.431</td><td>0.091</td></tr>
+          <tr><td><span class="tag" style="background:#5b8cff"></span>ProtoSAM-post</td><td>SAM-based</td><td>0.422</td><td>0.276</td></tr>
+          <tr><td><span class="tag" style="background:#ff6a8b"></span>STAMP-2B</td><td>MLLM-based</td><td>0.422</td><td>0.550</td></tr>
+          <tr><td><span class="tag" style="background:#34d399"></span>U-Net</td><td>Specialist</td><td>0.374</td><td>0.196</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cap" style="margin-top:14px">Top-10 by average Dice under the ten-shot setting. MedSAM3 leads on Dice, while LoRA-adapted CLIP methods lead on target-absence Specificity — no single method dominates both axes.</div>
+  </div>
+</section>
+
+<!-- FINDINGS -->
+<section class="section" id="findings">
+  <div class="container">
+    <div class="eyebrow" style="text-align:center;display:block">Takeaways</div>
+    <h2>Key Findings</h2>
+    <p class="sub">Four observations that hold consistently across the benchmark.</p>
+    <div class="finds reveal">
+      <div class="find"><div class="num">01</div><div><h3>Adaptation strategy matters most</h3><p>Direct visual adaptation of support examples generally outperforms prompt-based strategies. MedSAM3 reaches the highest average Dice (0.683) in the ten-shot setting.</p></div></div>
+      <div class="find"><div class="num">02</div><div><h3>More shots help selectively</h3><p>Additional support masks improve accuracy only for methods that can effectively utilize them; many prompt- and text-driven models barely move from K=1 to K=10.</p></div></div>
+      <div class="find"><div class="num">03</div><div><h3>Semantic shift is the hard case</h3><p>Transferring to a previously unseen ROI (semantic shift) is substantially harder than adapting to a new imaging domain (covariate shift).</p></div></div>
+      <div class="find"><div class="num">04</div><div><h3>Localization ≠ rejection</h3><p>Strong segmentation does not imply reliable target-absence recognition. LoRA-adapted CLIP methods lead on Specificity (up to 0.755) yet trail MedSAM3 on Dice.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY / ANALYSIS -->
+<section class="section" id="gallery">
+  <div class="container">
+    <div class="eyebrow" style="text-align:center;display:block">Deeper Analysis</div>
+    <h2>Reading the Results</h2>
+    <p class="sub">Beyond the headline leaderboard, six analyses explain <i>why</i> the families behave the way they do — each figure paired with what it actually tells us.</p>
+
+    <div class="anitem reveal">
+      <div class="anfig"><img src="static/images/fame_qualitative_scheme_examples.png" alt="Qualitative scheme examples"></div>
+      <div class="antext">
+        <span class="pill">Qualitative · adaptation schemes</span>
+        <h3>How the four families fail differently</h3>
+        <p>Side-by-side predictions expose distinct failure signatures: SAM-based models produce sharp but sometimes over-confident masks, CLIP-based methods localise coarsely yet abstain more readily, and MLLM-driven pipelines hallucinate plausible-looking regions when the textual prompt under-specifies the ROI. The visual adaptation family tracks the ground-truth boundary most faithfully.</p>
+      </div>
+    </div>
+
+    <div class="anitem rev reveal">
+      <div class="anfig"><img src="static/images/fame_qualitative_medplib_adaptations.png" alt="MedPLIB adaptation variants"></div>
+      <div class="antext">
+        <span class="pill">MLLM · adaptation variants</span>
+        <h3>How you adapt an MLLM matters more than which one</h3>
+        <p>Within a single MLLM backbone, swapping the adaptation strategy changes the mask far more than swapping the base model. LoRA-style visual adaptation recovers usable boundaries, whereas prompt-only variants drift — reinforcing the paper's central claim that <b>exploitation of support examples</b>, not raw model scale, drives few-shot success.</p>
+      </div>
+    </div>
+
+    <div class="anitem reveal">
+      <div class="anfig"><img src="static/images/fame_iid_family_score_distribution.png" alt="Family score distribution"></div>
+      <div class="antext">
+        <span class="pill">Distribution · by family</span>
+        <h3>Averages hide the variance</h3>
+        <p>The per-family score distributions are wide and heavy-tailed: a family's mean Dice is a poor predictor of its worst-case behaviour. Specialists cluster tightly, while foundation-model families show long low-Dice tails on the harder anatomies — a reliability gap that a single leaderboard number cannot surface.</p>
+      </div>
+    </div>
+
+    <div class="anitem rev reveal">
+      <div class="anfig"><img src="static/images/fame_iid_anatomy_best_margin.png" alt="Best-method margin by anatomy"></div>
+      <div class="antext">
+        <span class="pill">Per-anatomy · winner margin</span>
+        <h3>No family wins everywhere</h3>
+        <p>The margin between the best and second-best method flips sign across anatomies. Where boundaries are texture-rich (skin, colon) SAM-based methods dominate; on low-contrast targets (brain, lung lesions) the gap narrows and specialists or CLIP-LoRA close in. This is exactly why FAME reports <b>task-level macro-averages</b> instead of letting large datasets dominate.</p>
+      </div>
+    </div>
+
+    <div class="anitem reveal">
+      <div class="anfig"><img src="static/images/fame_method_adaptation_matrix.png" alt="Method adaptation matrix"></div>
+      <div class="antext">
+        <span class="pill">Method × adaptation</span>
+        <h3>A map of what actually helps</h3>
+        <p>The method-by-strategy matrix makes the interaction explicit: parameter-update adaptation lifts almost every backbone, while interface-only prompting is hit-or-miss. The brightest cells concentrate where a capable visual backbone meets a genuine support-exploiting adapter — a compact recipe for practitioners.</p>
+      </div>
+    </div>
+
+    <div class="anitem rev reveal">
+      <div class="anfig"><img src="static/images/fame_ood_param_update_ranked_lollipop.png" alt="OOD parameter-update transfer"></div>
+      <div class="antext">
+        <span class="pill">OOD · covariate vs. semantic</span>
+        <h3>Semantic shift is the real frontier</h3>
+        <p>Ranked out-of-distribution transfer separates two very different challenges: adapting to a new <i>imaging domain</i> (covariate shift) is largely solved, but transferring to a previously <i>unseen ROI</i> (semantic shift) collapses performance for nearly every method. The gap between the two bars is FAME's clearest open problem.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BIBTEX -->
+<section class="section tight" id="bibtex">
+  <div class="container" style="max-width:860px">
+    <div class="eyebrow" style="text-align:center;display:block">Cite</div>
+    <h2>BibTeX</h2>
+    <p class="sub">If you use FAME, please cite our paper.</p>
+    <div class="bibtex reveal">
+      <button class="copybtn" id="copybtn" onclick="copyBib()">Copy</button>
+<pre id="bibtex-entry">@misc{liu2026benchmarkingfoundationlargelanguage,
+  title        = {Benchmarking Foundation and Large Language Models
+                  for Few-Shot Medical Image Segmentation},
+  author       = {Jinghong Liu and Yuchuan Deng and Fanping Liu
+                  and Meng Huang and Xirong Li},
+  year         = {2026},
+  eprint       = {2607.27856},
+  archivePrefix= {arXiv},
+  primaryClass = {cs.CV},
+  url          = {https://arxiv.org/abs/2607.27856}
+}</pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>FAME · Renmin University of China · <a href="https://arxiv.org/abs/2607.27856" target="_blank" rel="noopener">arXiv 2607.27856</a> · <a href="https://huggingface.co/datasets/Kimokcheon/FAME_benchmark" target="_blank" rel="noopener">🤗 Dataset</a> · <a href="https://github.com/rucerchui" target="_blank" rel="noopener">Code</a></p>
+    <p style="margin-top:8px">Page template inspired by <a href="https://nerfies.github.io/" target="_blank" rel="noopener">Nerfies</a>. Content © the authors.</p>
+  </div>
+</footer>
+
+<script src="static/js/samples.js"></script>
+<script src="static/js/explorer.js"></script>
+<script src="static/js/main.js"></script>
+</body>
+</html>
