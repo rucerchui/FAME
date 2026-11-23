@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FAME · Benchmarking Foundation & Large Language Models for Few-Shot Medical Image Segmentation</title>
-<meta name="description" content="FAME is a unified benchmark for few-shot medical image segmentation across specialists, SAM-based, CLIP-based, and MLLM-based methods, with 14,958 test samples over 7 anatomies and 9 modalities.">
-<meta property="og:title" content="FAME: Benchmarking Foundation & Large Language Models for Few-Shot Medical Image Segmentation">
-<meta property="og:description" content="A unified FS-MIS benchmark: 21 tasks, 19 datasets, 7 anatomies, 9 modalities, 40+ methods, dual metrics (Dice & Specificity).">
-<meta property="og:image" content="static/images/FAME_benchmark_dataset_overview.png">
+<title>FAME · Benchmarking Large-Model Methods for Few-Shot Lesion Segmentation</title>
+<meta name="description" content="FAME is a lesion-focused benchmark for few-shot lesion segmentation: 17 public datasets, 7 anatomical sites, 7 modalities, 13,188 test samples, four lesion subsets (Small / Medium / Large / Scatter), and 34 methods (27 large-model + 7 conventional baselines).">
+<meta property="og:title" content="FAME: Benchmarking Large-Model Methods for Few-Shot Lesion Segmentation">
+<meta property="og:description" content="A lesion-focused FS lesion segmentation benchmark: 17 datasets, 7 anatomies, 7 modalities, 13,188 test samples, four lesion subsets, 34 methods, dual metrics (DSC & Specificity).">
+<meta property="og:image" content="static/samples/BraTS_overlay.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="static/css/style.css">
@@ -34,9 +34,9 @@
 <!-- HERO -->
 <header class="hero">
   <div class="container">
-    <div class="eyebrow">Few-Shot Medical Image Segmentation Benchmark</div>
+    <div class="eyebrow">Few-Shot Lesion Segmentation Benchmark</div>
     <h1 class="title">FAME</h1>
-    <div class="fullname">Benchmarking <b>F</b>ound<b>A</b>tion and Large Language Models for Few-Shot <b>M</b>edical Image S<b>E</b>gmentation</div>
+    <div class="fullname">A lesion-<b>F</b>ocused benchmark for evaluating l<b>A</b>rge-<b>M</b>odel m<b>E</b>thods for Few-Shot Lesion Segmentation</div>
     <div class="venue">arXiv 2607.27856</div>
 
     <div class="authors">
@@ -52,18 +52,18 @@
     <div class="btns">
       <a class="btn primary" href="https://arxiv.org/abs/2607.27856" target="_blank" rel="noopener"><span class="ic">📄</span> Paper</a>
       <a class="btn" href="https://arxiv.org/pdf/2607.27856" target="_blank" rel="noopener"><span class="ic">📑</span> arXiv PDF</a>
-      <a class="btn" href="https://github.com/rucerchui/FAME_code" target="_blank" rel="noopener"><span class="ic">💻</span> Code</a>
+      <a class="btn" href="https://github.com/Kimokcheon/FAME" target="_blank" rel="noopener"><span class="ic">💻</span> Code</a>
       <a class="btn hf" href="https://huggingface.co/datasets/Kimokcheon/FAME_benchmark" target="_blank" rel="noopener"><span class="ic">🤗</span> Dataset</a>
     </div>
 
     <!-- STAT STRIP -->
     <div class="stats reveal">
-      <div class="stat"><div class="n" data-n="14958">0</div><div class="l">Test samples</div></div>
-      <div class="stat"><div class="n" data-n="21">0</div><div class="l">ROI tasks</div></div>
-      <div class="stat"><div class="n" data-n="19">0</div><div class="l">Source datasets</div></div>
-      <div class="stat"><div class="n" data-n="7">0</div><div class="l">Anatomies</div></div>
-      <div class="stat"><div class="n" data-n="9">0</div><div class="l">Modalities</div></div>
-      <div class="stat"><div class="n" data-n="40" data-suffix="+">0</div><div class="l">Methods</div></div>
+      <div class="stat"><div class="n" data-n="13188">0</div><div class="l">Test samples</div></div>
+      <div class="stat"><div class="n" data-n="17">0</div><div class="l">Source datasets</div></div>
+      <div class="stat"><div class="n" data-n="4">0</div><div class="l">Lesion subsets</div></div>
+      <div class="stat"><div class="n" data-n="7">0</div><div class="l">Anatomical sites</div></div>
+      <div class="stat"><div class="n" data-n="7">0</div><div class="l">Imaging modalities</div></div>
+      <div class="stat"><div class="n" data-n="34">0</div><div class="l">Methods</div></div>
     </div>
   </div>
 </header>
@@ -73,10 +73,14 @@
   <div class="container">
     <div class="eyebrow" style="text-align:center;display:block">Interactive</div>
     <h2>Dataset Explorer</h2>
-    <p class="sub">Real support/query examples straight from the FAME release — one representative case per source dataset. Filter by anatomy or modality, then toggle each card between the raw image, the ground-truth overlay, and the isolated mask.</p>
+    <p class="sub">Real support/query examples straight from the FAME release — one representative case per source dataset. Filter by lesion subset, anatomy, or modality, then toggle each card between the raw image, the ground-truth overlay, and the isolated mask.</p>
 
     <!-- controls -->
     <div class="exp-controls reveal">
+      <div class="exp-filtergroup" id="subsetFilters" data-group="subset">
+        <span class="exp-flabel">Lesion subset</span>
+        <button class="chip active" data-val="all">All</button>
+      </div>
       <div class="exp-filtergroup" id="organFilters" data-group="organ">
         <span class="exp-flabel">Anatomy</span>
         <button class="chip active" data-val="all">All</button>
@@ -93,12 +97,12 @@
       </div>
     </div>
 
-    <div class="exp-count reveal"><span id="expCount">19</span> datasets shown</div>
+    <div class="exp-count reveal"><span id="expCount">17</span> datasets shown</div>
 
     <!-- grid -->
     <div class="explorer reveal" id="explorerGrid"></div>
 
-    <p class="cap" style="margin-top:16px">Overlay = ground-truth ROI (translucent fill + white contour) rendered in the anatomy colour. Foreground % is the share of pixels belonging to the target ROI in the shown slice; tiny-lesion cases (marked <span class="zoombadge">⤢ zoom</span>) are cropped around the ROI so the target stays visible. All samples are decoded directly from the public HuggingFace release.</p>
+    <p class="cap" style="margin-top:16px">Overlay = ground-truth lesion (translucent fill + white contour) rendered in the anatomy colour. <b>FG %</b> is the task-level mean foreground-to-image area ratio <i>r</i> over positive images. FAME-Small (<i>r</i> &lt; 2%), FAME-Medium (2% ≤ <i>r</i> &lt; 10%), and FAME-Large (<i>r</i> ≥ 10%) contain blob-like lesions; FAME-Scatter contains lesions spread over multiple spatially separated regions, regardless of area. Tiny-lesion cases (marked <span class="zoombadge">⤢ zoom</span>) are cropped around the lesion so the target stays visible.</p>
   </div>
 </section>
 
@@ -108,9 +112,9 @@
     <div class="eyebrow" style="text-align:center;display:block">Overview</div>
     <h2>Abstract</h2>
     <div class="abstract reveal">
-      <p class="lead">Few-shot medical image segmentation (FS-MIS) aims to segment novel regions of interest (ROIs) from a few annotated support examples. Despite rapid progress, existing FS-MIS solutions span diverse paradigms but are evaluated under inconsistent settings, leaving their relative effectiveness unclear.</p>
-      <p>We introduce <b>FAME</b>, a unified benchmark for evaluating FS-MIS solutions, covering <b>specialists</b>, <b>SAM-based</b>, <b>CLIP-based</b>, and <b>MLLM-based</b> methods. FAME contains <b>14,958 test samples</b> across <b>7 anatomical sites</b>, <b>9 imaging modalities</b>, and <b>14 ROI categories</b>, and evaluates models under zero-shot and ten-shot settings with additional assessment of target-absence recognition and generalization under covariate and semantic shifts.</p>
-      <p>Our evaluation reveals several findings. First, effective few-shot segmentation depends on how models exploit support examples: direct visual adaptation generally outperforms prompt-based strategies. Second, increasing support examples improves performance only when models can effectively utilize them. Third, semantic transfer remains substantially more challenging than imaging-domain adaptation, and strong localization ability does not necessarily imply reliable target-absence recognition.</p>
+      <p class="lead">Few-shot lesion segmentation (FSLS) aims to segment lesions using only one or few annotated examples. Recent large pretrained models offer promising capabilities for FSLS, yet their effectiveness across diverse lesion types and segmentation strategies remains insufficiently understood. Moreover, existing evaluations often focus on images containing target lesions, providing limited insight into the specificity of these models.</p>
+      <p>To address these limitations, we introduce <b>FAME</b>, a lesion-focused benchmark integrating <b>17 public medical datasets</b> across <b>7 anatomical sites</b>. It organizes lesion segmentation tasks into four subsets according to lesion size and spatial distribution. We systematically evaluate <b>27 large-model methods</b> alongside <b>7 conventional baselines</b>, assessing both segmentation accuracy on positive queries and lesion-absence rejection on negative queries. We further investigate the effects of support set size and cross-dataset generalization.</p>
+      <p>Our evaluation makes several important findings. High segmentation accuracy does not guarantee high specificity. Stronger mask generators and additional support examples do not necessarily improve performance. The effectiveness of pretrained models depends on how they are used for segmentation. Furthermore, small and scattered lesions remain challenging, while cross-domain support can sometimes outperform in-domain support.</p>
     </div>
   </div>
 </section>
@@ -120,35 +124,35 @@
   <div class="container">
     <div class="eyebrow" style="text-align:center;display:block">Why FAME</div>
     <h2>What Makes FAME Unique</h2>
-    <p class="sub">The first FS-MIS benchmark to compare four solution categories head-to-head under a single protocol, with dual metrics that reward both accurate segmentation and correct target-absence rejection.</p>
+    <p class="sub">A lesion-focused benchmark that compares three large-model paradigms and seven conventional baselines under a single protocol, with dual metrics that reward both accurate delineation and correct lesion-absence rejection.</p>
     <div class="grid f4 reveal">
       <div class="card">
         <div class="ico">🧩</div>
-        <h3>Four Categories, One Protocol</h3>
-        <p>Specialists, SAM-based, CLIP-based, and MLLM-based methods evaluated on identical support/query episodes and pipeline.</p>
+        <h3>Three Paradigms, One Protocol</h3>
+        <p>Similarity-based, prompt-based, and interaction-based methods evaluated on identical support/query episodes and pipeline.</p>
       </div>
       <div class="card">
         <div class="ico">🎯</div>
         <h3>Dual Metrics</h3>
-        <p>Dice for target-present overlap plus Specificity for target-absent rejection — exposing silent false-alarm behavior.</p>
+        <p>DSC on positive queries plus image-level specificity on negative queries — exposing silent false alarms when the lesion is absent.</p>
       </div>
       <div class="card">
         <div class="ico">🔀</div>
-        <h3>Zero / Few / OOD</h3>
-        <p>Zero-shot, ten-shot (5 fixed seeds), and out-of-distribution tests separating covariate and semantic shift.</p>
+        <h3>Four Lesion Subsets</h3>
+        <p>FAME-Small, FAME-Medium, FAME-Large, and FAME-Scatter, grouped by lesion size and spatial distribution.</p>
       </div>
       <div class="card">
         <div class="ico">🏥</div>
         <h3>Broad Coverage</h3>
-        <p>Brain, breast, colon, retina, lung, skin, thyroid across CT, MRI, OCT, ultrasound, dermoscopy, endoscopy, and more.</p>
+        <p>Brain, breast, colon, lung, retina, skin, and thyroid across CT, MRI, ultrasound, colonoscopy, fundus photography, dermoscopy, and OCT.</p>
       </div>
     </div>
 
     <div class="families reveal" style="margin-top:34px">
-      <span class="fam"><span class="sw sam"></span> SAM-based</span>
-      <span class="fam"><span class="sw clip"></span> CLIP-based</span>
-      <span class="fam"><span class="sw mllm"></span> MLLM-based</span>
-      <span class="fam"><span class="sw spec"></span> Specialists &amp; in-context</span>
+      <span class="fam"><span class="sw sim"></span> Similarity-based</span>
+      <span class="fam"><span class="sw prompt"></span> Prompt-based</span>
+      <span class="fam"><span class="sw inter"></span> Interaction-based</span>
+      <span class="fam"><span class="sw spec"></span> Conventional baselines</span>
     </div>
   </div>
 </section>
@@ -157,43 +161,74 @@
 <section class="section tight" id="methods">
   <div class="container">
     <div class="eyebrow" style="text-align:center;display:block">How they adapt</div>
-    <h2>Four Categories, One Episode</h2>
-    <p class="sub">Every method sees the same K=10 support pairs and query — but each category exploits them through a fundamentally different interface. These are the exact adaptation schematics from the paper.</p>
+    <h2>Three Paradigms, One Episode</h2>
+    <p class="sub">Every method receives the same one-shot support pair and query — what differs is where the support information enters the pipeline. FAME groups 27 large-model methods and 7 conventional baselines by the mask generator they use.</p>
 
     <div class="mtabs reveal">
-      <button class="mtab active" data-fam="sam"><span class="sw sam"></span> SAM-based</button>
-      <button class="mtab" data-fam="clip"><span class="sw clip"></span> CLIP-based</button>
-      <button class="mtab" data-fam="mllm"><span class="sw mllm"></span> MLLM-based</button>
-      <button class="mtab" data-fam="spec"><span class="sw spec"></span> Specialists</button>
+      <button class="mtab active" data-fam="sim"><span class="sw sim"></span> Similarity-based</button>
+      <button class="mtab" data-fam="prompt"><span class="sw prompt"></span> Prompt-based</button>
+      <button class="mtab" data-fam="inter"><span class="sw inter"></span> Interaction-based</button>
     </div>
 
     <div class="mpanels reveal">
-      <div class="mpanel active" data-fam="sam">
-        <div class="mfig"><img src="static/images/fame_family_sam.jpg" alt="SAM-based adaptation"></div>
+      <div class="mpanel active" data-fam="sim">
+        <div class="mfig">
+          <svg viewBox="0 0 620 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Similarity-based pipeline">
+            <defs><marker id="ar1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#8ea2d8"/></marker></defs>
+            <rect x="8" y="46" width="120" height="58" rx="8" fill="#1b2547" stroke="#fbc76b"/><text x="68" y="70" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Support</text><text x="68" y="88" text-anchor="middle" fill="#aeb8d4" font-size="11">I_s + M_s</text>
+            <rect x="172" y="46" width="130" height="58" rx="8" fill="#1b2547" stroke="#8ea2d8"/><text x="237" y="70" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Feature encoder</text><text x="237" y="88" text-anchor="middle" fill="#aeb8d4" font-size="11">CLIP / CNN</text>
+            <rect x="346" y="46" width="120" height="58" rx="8" fill="#1b2547" stroke="#22d3ee"/><text x="406" y="70" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Matching</text><text x="406" y="88" text-anchor="middle" fill="#aeb8d4" font-size="11">prototype / similarity</text>
+            <rect x="510" y="46" width="100" height="58" rx="8" fill="#1b2547" stroke="#8fb5ff"/><text x="560" y="80" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Mask</text>
+            <rect x="172" y="146" width="130" height="50" rx="8" fill="#1b2547" stroke="#6ee7b7"/><text x="237" y="176" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Query image</text>
+            <line x1="128" y1="75" x2="168" y2="75" stroke="#8ea2d8" stroke-width="1.6" marker-end="url(#ar1)"/>
+            <line x1="302" y1="75" x2="342" y2="75" stroke="#8ea2d8" stroke-width="1.6" marker-end="url(#ar1)"/>
+            <line x1="466" y1="75" x2="506" y2="75" stroke="#8ea2d8" stroke-width="1.6" marker-end="url(#ar1)"/>
+            <path d="M237,146 L237,110" stroke="#6ee7b7" stroke-width="1.6" marker-end="url(#ar1)" fill="none"/>
+          </svg>
+        </div>
         <div class="mdesc">
-          <h3>SAM-based</h3>
-          <p>Promptable segmentation backbones (SAM / MedSAM3) are steered with geometric prompts — points, boxes, or a coarse mask — derived from the support set. Adaptation lives in the prompt/interface layer or a lightweight detector, keeping the mask decoder frozen. Delivers the sharpest boundaries and the top Dice (MedSAM3, 0.683).</p>
+          <h3>Similarity-based</h3>
+          <p>The support foreground is summarized as features or prototypes, and each query location is classified by similarity to them. Subfamilies: <b>Matching</b> (PANet, FAMNet, INSID3, RSRM) and <b>CLIP Head</b> (MaskCLIP, ProxyCLIP, SCLIP). Best average DSC in this group: RSRM, 0.341.</p>
         </div>
       </div>
-      <div class="mpanel" data-fam="clip">
-        <div class="mfig"><img src="static/images/fame_family_clip.jpg" alt="CLIP-based adaptation"></div>
+      <div class="mpanel" data-fam="prompt">
+        <div class="mfig">
+          <svg viewBox="0 0 620 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Prompt-based pipeline">
+            <defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#8ea2d8"/></marker></defs>
+            <rect x="8" y="46" width="120" height="58" rx="8" fill="#1b2547" stroke="#fbc76b"/><text x="68" y="70" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Support</text><text x="68" y="88" text-anchor="middle" fill="#aeb8d4" font-size="11">I_s + M_s</text>
+            <rect x="172" y="46" width="140" height="58" rx="8" fill="#1b2547" stroke="#8ea2d8"/><text x="242" y="70" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Prompt generator</text><text x="242" y="88" text-anchor="middle" fill="#aeb8d4" font-size="11">points / box / coarse mask</text>
+            <rect x="356" y="46" width="150" height="58" rx="8" fill="#1b2547" stroke="#22d3ee"/><text x="431" y="70" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">SAM / SAM2 / SAM3</text><text x="431" y="88" text-anchor="middle" fill="#aeb8d4" font-size="11">mask generator</text>
+            <rect x="530" y="46" width="80" height="58" rx="8" fill="#1b2547" stroke="#8fb5ff"/><text x="570" y="80" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Mask</text>
+            <rect x="172" y="146" width="140" height="50" rx="8" fill="#1b2547" stroke="#6ee7b7"/><text x="242" y="176" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Query image</text>
+            <rect x="356" y="146" width="150" height="50" rx="8" fill="#1b2547" stroke="#c4b5fd"/><text x="431" y="176" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Text T (optional)</text>
+            <line x1="128" y1="75" x2="168" y2="75" stroke="#8ea2d8" stroke-width="1.6" marker-end="url(#ar2)"/>
+            <line x1="312" y1="75" x2="352" y2="75" stroke="#8ea2d8" stroke-width="1.6" marker-end="url(#ar2)"/>
+            <line x1="506" y1="75" x2="526" y2="75" stroke="#8ea2d8" stroke-width="1.6" marker-end="url(#ar2)"/>
+            <path d="M242,146 L242,110" stroke="#6ee7b7" stroke-width="1.6" marker-end="url(#ar2)" fill="none"/>
+            <path d="M431,146 L431,110" stroke="#c4b5fd" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#ar2)" fill="none"/>
+          </svg>
+        </div>
         <div class="mdesc">
-          <h3>CLIP-based</h3>
-          <p>A frozen CLIP ViT encodes dense patch features while learnable prompt tokens + the text encoder produce a class embedding; their similarity map becomes the mask. LoRA adaptation of this pathway yields the strongest target-absence Specificity (ProxyCLIP-LoRA, 0.755) — it abstains when the ROI is truly absent.</p>
+          <h3>Prompt-based</h3>
+          <p>Support annotations are converted into prompts for a pretrained promptable segmenter. Subfamilies: <b>SAM</b> (GF-SAM, Matcher, SAM-MPA, MAUP, ProtoSAM, FoB, MedPLIB; LISA, GLaMM, F-LMM, Text4Seg, READ, STAMP, LENS), <b>SAM2</b> (SANSA, MedPro), and <b>SAM3</b> (CG-ICS, MedSAM3). Best average DSC overall: MedSAM3 (LoRA-SFT), 0.618.</p>
         </div>
       </div>
-      <div class="mpanel" data-fam="mllm">
-        <div class="mfig"><img src="static/images/fame_family_mllm.jpg" alt="MLLM-based adaptation"></div>
-        <div class="mdesc">
-          <h3>MLLM-based</h3>
-          <p>A vision encoder feeds visual tokens to an LLM that emits either a built-in <code>&lt;SEG&gt;</code> token decoded to a mask, or a plug-in attention map routed to a mask head. Powerful but prompt-sensitive: how the MLLM is adapted matters more than which backbone is used.</p>
+      <div class="mpanel" data-fam="inter">
+        <div class="mfig">
+          <svg viewBox="0 0 620 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interaction-based pipeline">
+            <defs><marker id="ar3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#8ea2d8"/></marker></defs>
+            <rect x="8" y="70" width="130" height="58" rx="8" fill="#1b2547" stroke="#fbc76b"/><text x="73" y="94" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Support</text><text x="73" y="112" text-anchor="middle" fill="#aeb8d4" font-size="11">I_s + M_s</text>
+            <rect x="8" y="150" width="130" height="50" rx="8" fill="#1b2547" stroke="#6ee7b7"/><text x="73" y="180" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Query image</text>
+            <rect x="210" y="80" width="200" height="100" rx="10" fill="#1b2547" stroke="#22d3ee"/><text x="310" y="112" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Interaction blocks</text><text x="310" y="132" text-anchor="middle" fill="#aeb8d4" font-size="11">Transformer / CNN</text><text x="310" y="150" text-anchor="middle" fill="#aeb8d4" font-size="11">/ Diffusion</text>
+            <rect x="480" y="100" width="110" height="58" rx="8" fill="#1b2547" stroke="#8fb5ff"/><text x="535" y="134" text-anchor="middle" fill="#e8ecf7" font-size="12" font-weight="700">Mask</text>
+            <line x1="138" y1="99" x2="206" y2="115" stroke="#8ea2d8" stroke-width="1.6" marker-end="url(#ar3)"/>
+            <line x1="138" y1="175" x2="206" y2="155" stroke="#8ea2d8" stroke-width="1.6" marker-end="url(#ar3)"/>
+            <line x1="414" y1="130" x2="476" y2="130" stroke="#8ea2d8" stroke-width="1.6" marker-end="url(#ar3)"/>
+          </svg>
         </div>
-      </div>
-      <div class="mpanel" data-fam="spec">
-        <div class="mfig"><img src="static/images/fame_family_spec.jpg" alt="Specialist / in-context adaptation"></div>
         <div class="mdesc">
-          <h3>Specialists &amp; in-context</h3>
-          <p>Purpose-built few-shot segmenters (UniverSeg, Tyche) and in-context networks match query features against support features through cross/matching blocks — direct visual adaptation with no text or prompt engineering. Consistent mid-pack Dice with tight, predictable variance.</p>
+          <h3>Interaction-based</h3>
+          <p>Support and query features interact inside the segmenter itself, without a separate prompt generator. Subfamilies: <b>Transformer</b> (SegGPT, SINE), <b>CNN</b> (UniverSeg, Tyche, DIFD, U-Net, nnU-Netv2), and <b>Diffusion</b> (DiffewS, SD-FSMIS). Best average DSC in this group: SegGPT, 0.339.</p>
         </div>
       </div>
     </div>
@@ -205,32 +240,32 @@
   <div class="container">
     <div class="eyebrow" style="text-align:center;display:block">Analysis</div>
     <h2>Key Results</h2>
-    <p class="sub">A consistent story across anatomies, support budgets, and distribution shifts.</p>
+    <p class="sub">A consistent story across lesion subsets, support budgets, and distribution shifts.</p>
 
     <div class="figrow reveal" style="margin-bottom:44px">
-      <div class="figwrap"><img src="static/images/fame_kshot_dice_trend.png" alt="K-shot Dice trend"></div>
+      <div class="figwrap"><img src="static/images/fame_subset_mean.png" alt="Mean DSC per lesion subset"></div>
       <div class="figtext">
-        <span class="pill">Support budget</span>
-        <h3>More shots help — only if the model can use them</h3>
-        <p>As the support budget grows from K=1 to K=10, methods that genuinely exploit visual support cues improve steadily, while prompt-based and text-driven approaches plateau. The gain from additional annotated masks is far from uniform across families.</p>
+        <span class="pill">Lesion subsets</span>
+        <h3>Large lesions are easiest; Small and Scatter remain hard</h3>
+        <p>Averaged over all one-shot methods, DSC is 0.404 on FAME-Large but only 0.118 on FAME-Small and 0.095 on FAME-Scatter. FAME-Medium sits at 0.279. Small and scattered lesions are the main open challenge — not simply a matter of model scale.</p>
       </div>
     </div>
 
     <div class="figrow reveal" style="margin-bottom:44px">
       <div class="figtext">
-        <span class="pill">Dice vs. Specificity</span>
-        <h3>Good localization ≠ reliable rejection</h3>
-        <p>Plotting Dice against Specificity shows the two abilities are largely decoupled: several methods that segment present targets well produce false-positive masks when the ROI is absent, underscoring why a single overlap metric is insufficient for clinical reliability.</p>
+        <span class="pill">Per-subset ranking</span>
+        <h3>Method rankings flip across lesion subsets</h3>
+        <p>FAMNet averages 0.165 overall but 0.181 on Scatter, whereas RSRM averages 0.341 but only 0.056 on Scatter. Even within one subset, performance varies strongly across datasets, which is why FAME reports task-level macro-averages rather than case-level aggregation.</p>
       </div>
-      <div class="figwrap"><img src="static/images/fame_iid_dice_spe_scatter.png" alt="Dice vs Specificity scatter"></div>
+      <div class="figwrap"><img src="static/images/fame_subset_heatmap.png" alt="Per-subset DSC heatmap"></div>
     </div>
 
     <div class="figrow reveal">
-      <div class="figwrap"><img src="static/images/fame_few_shot_organ_dice_heatmap.png" alt="Per-organ few-shot Dice heatmap"></div>
+      <div class="figwrap"><img src="static/images/fame_dsc_spe.png" alt="DSC versus Specificity"></div>
       <div class="figtext">
-        <span class="pill">Per-anatomy</span>
-        <h3>No single family wins everywhere</h3>
-        <p>Performance varies strongly across anatomies even within one family, which is why FAME reports task-level macro-averages rather than case-level aggregation that would let large datasets dominate the score.</p>
+        <span class="pill">DSC vs. Specificity</span>
+        <h3>Good localization ≠ reliable absence rejection</h3>
+        <p>12 of the 43 one-shot configurations obtain zero specificity. MedSAM3 (LoRA-SFT) reaches the best average DSC (0.618) with 0.064 Spe., while ProxyCLIP reaches 0.696 Spe. at 0.201 DSC. The two abilities are largely decoupled, so a single overlap metric is not enough for clinical reliability.</p>
       </div>
     </div>
   </div>
@@ -239,29 +274,30 @@
 <!-- LEADERBOARD -->
 <section class="section tight" id="leaderboard">
   <div class="container">
-    <div class="eyebrow" style="text-align:center;display:block">Ten-shot (K=10)</div>
+    <div class="eyebrow" style="text-align:center;display:block">One-shot (K=1)</div>
     <h2>Leaderboard</h2>
-    <p class="sub">Benchmark-level average Dice and Specificity in the few-shot mode. Full per-anatomy and per-dataset breakdowns are in the paper and supplementary material.</p>
+    <p class="sub">Benchmark-level average DSC and specificity in the primary one-shot setting, averaged over five fixed support groups. Methods below U-Net (0.176 DSC) are excluded from the paper's ranking.</p>
     <div class="tablewrap reveal">
       <table class="board mono">
         <thead>
-          <tr><th>Method</th><th>Category</th><th>Avg Dice ↑</th><th>Avg Spe. ↑</th></tr>
+          <tr><th>Method</th><th>Paradigm</th><th>Avg DSC ↑</th><th>Avg Spe. ↑</th><th>Small</th><th>Medium</th><th>Large</th><th>Scatter</th></tr>
         </thead>
         <tbody>
-          <tr class="rowtop"><td><span class="tag" style="background:#5b8cff"></span>MedSAM3</td><td>SAM-based</td><td class="best">0.683</td><td>0.046</td></tr>
-          <tr><td><span class="tag" style="background:#22d3ee"></span>MaskCLIP-LoRA</td><td>CLIP-based</td><td>0.488</td><td>0.677</td></tr>
-          <tr><td><span class="tag" style="background:#22d3ee"></span>ProxyCLIP-LoRA</td><td>CLIP-based</td><td>0.465</td><td class="best">0.755</td></tr>
-          <tr><td><span class="tag" style="background:#22d3ee"></span>SCLIP-LoRA</td><td>CLIP-based</td><td>0.460</td><td>0.737</td></tr>
-          <tr><td><span class="tag" style="background:#ff6a8b"></span>MedPLIB-7B-LoRA</td><td>MLLM-based</td><td>0.445</td><td>0.010</td></tr>
-          <tr><td><span class="tag" style="background:#34d399"></span>Tyche</td><td>Specialist</td><td>0.432</td><td>0.191</td></tr>
-          <tr><td><span class="tag" style="background:#34d399"></span>UniverSeg</td><td>Specialist</td><td>0.431</td><td>0.091</td></tr>
-          <tr><td><span class="tag" style="background:#5b8cff"></span>ProtoSAM-post</td><td>SAM-based</td><td>0.422</td><td>0.276</td></tr>
-          <tr><td><span class="tag" style="background:#ff6a8b"></span>STAMP-2B</td><td>MLLM-based</td><td>0.422</td><td>0.550</td></tr>
-          <tr><td><span class="tag" style="background:#34d399"></span>U-Net</td><td>Specialist</td><td>0.374</td><td>0.196</td></tr>
+          <tr class="rowtop"><td><span class="tag" style="background:#22d3ee"></span>MedSAM3 (LoRA-SFT)</td><td>Prompt</td><td class="best">0.618</td><td>0.064</td><td>0.503</td><td>0.788</td><td class="best">0.796</td><td class="best">0.385</td></tr>
+          <tr><td><span class="tag" style="background:#22d3ee"></span>CG-ICS (MedSAM3 Gen.)</td><td>Prompt</td><td>0.587</td><td>0.000</td><td>0.492</td><td class="best">0.791</td><td>0.723</td><td>0.339</td></tr>
+          <tr><td><span class="tag" style="background:#22d3ee"></span>CG-ICS (Qwen3-VL-4B)</td><td>Prompt</td><td>0.501</td><td>0.000</td><td>0.388</td><td>0.675</td><td>0.627</td><td>0.316</td></tr>
+          <tr><td><span class="tag" style="background:#22d3ee"></span>SANSA</td><td>Prompt</td><td>0.378</td><td>0.020</td><td>0.298</td><td>0.478</td><td>0.590</td><td>0.144</td></tr>
+          <tr><td><span class="tag" style="background:#22d3ee"></span>ProtoSAM (SAM3 Gen.)</td><td>Prompt</td><td>0.376</td><td>0.118</td><td>0.290</td><td>0.561</td><td>0.549</td><td>0.104</td></tr>
+          <tr><td><span class="tag" style="background:#22d3ee"></span>ProtoSAM</td><td>Prompt</td><td>0.370</td><td>0.152</td><td>0.245</td><td>0.520</td><td>0.554</td><td>0.161</td></tr>
+          <tr><td><span class="tag" style="background:#5b8cff"></span>RSRM</td><td>Similarity</td><td>0.341</td><td>0.249</td><td>0.113</td><td>0.576</td><td>0.618</td><td>0.056</td></tr>
+          <tr><td><span class="tag" style="background:#ff6a8b"></span>SegGPT</td><td>Interaction</td><td>0.339</td><td class="best">0.367</td><td>0.237</td><td>0.442</td><td>0.493</td><td>0.187</td></tr>
+          <tr><td><span class="tag" style="background:#22d3ee"></span>Matcher</td><td>Prompt</td><td>0.326</td><td>0.000</td><td>0.294</td><td>0.356</td><td>0.510</td><td>0.143</td></tr>
+          <tr><td><span class="tag" style="background:#22d3ee"></span>MedPro</td><td>Prompt</td><td>0.314</td><td>0.359</td><td>0.144</td><td>0.467</td><td>0.518</td><td>0.129</td></tr>
+          <tr><td><span class="tag" style="background:#ff6a8b"></span>U-Net (reference)</td><td>Interaction</td><td>0.176</td><td>0.161</td><td>0.105</td><td>0.160</td><td>0.356</td><td>0.082</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="cap" style="margin-top:14px">Top-10 by average Dice under the ten-shot setting. MedSAM3 leads on Dice, while LoRA-adapted CLIP methods lead on target-absence Specificity — no single method dominates both axes.</div>
+    <div class="cap" style="margin-top:14px">Top-10 by average DSC, plus U-Net as the ranking threshold. In the zero-shot setting, MedSAM3 obtains the best average DSC (0.568, Spe. 0.034). Specificity is led separately by CLIP-head methods: SCLIP reaches 0.789 at 0.143 DSC and ProxyCLIP 0.696 at 0.201 DSC.</div>
   </div>
 </section>
 
@@ -272,10 +308,10 @@
     <h2>Key Findings</h2>
     <p class="sub">Four observations that hold consistently across the benchmark.</p>
     <div class="finds reveal">
-      <div class="find"><div class="num">01</div><div><h3>Adaptation strategy matters most</h3><p>Direct visual adaptation of support examples generally outperforms prompt-based strategies. MedSAM3 reaches the highest average Dice (0.683) in the ten-shot setting.</p></div></div>
-      <div class="find"><div class="num">02</div><div><h3>More shots help selectively</h3><p>Additional support masks improve accuracy only for methods that can effectively utilize them; many prompt- and text-driven models barely move from K=1 to K=10.</p></div></div>
-      <div class="find"><div class="num">03</div><div><h3>Semantic shift is the hard case</h3><p>Transferring to a previously unseen ROI (semantic shift) is substantially harder than adapting to a new imaging domain (covariate shift).</p></div></div>
-      <div class="find"><div class="num">04</div><div><h3>Localization ≠ rejection</h3><p>Strong segmentation does not imply reliable target-absence recognition. LoRA-adapted CLIP methods lead on Specificity (up to 0.755) yet trail MedSAM3 on Dice.</p></div></div>
+      <div class="find"><div class="num">01</div><div><h3>High DSC does not imply high specificity</h3><p>12 of 43 one-shot configurations obtain zero specificity. SANSA reaches 0.378 DSC with 0.020 Spe., while MedPro reaches 0.314 DSC with 0.359 Spe. Lesion delineation and lesion-absence rejection are distinct capabilities.</p></div></div>
+      <div class="find"><div class="num">02</div><div><h3>Stronger mask generators are not consistently better</h3><p>Replacing SAM3 with MedSAM3 lifts CG-ICS from 0.501 to 0.587, but ProtoSAM only moves from 0.370 to 0.376 and drops on Scatter from 0.161 to 0.104. Text4Seg decreases from 0.095 to 0.086.</p></div></div>
+      <div class="find"><div class="num">03</div><div><h3>More support helps selectively</h3><p>Tyche improves on FAME-Large from 35.4% to 65.0% DSC at K=10, while SegGPT gains DSC but loses specificity. INSID3 gains 31.6 pp specificity yet reaches only 1.9% DSC on Small at 10 shots.</p></div></div>
+      <div class="find"><div class="num">04</div><div><h3>Small and scattered lesions remain the frontier</h3><p>Tyche and UniverSeg stay below 13% DSC on Scatter even with 10 supports. Cross-domain support can sometimes help (CG-ICS +2.82 pp, ProxyCLIP +8.00 pp) but hurts MedPro (−10.24 pp).</p></div></div>
     </div>
   </div>
 </section>
@@ -285,59 +321,53 @@
   <div class="container">
     <div class="eyebrow" style="text-align:center;display:block">Deeper Analysis</div>
     <h2>Reading the Results</h2>
-    <p class="sub">Beyond the headline leaderboard, six analyses explain <i>why</i> the families behave the way they do — each figure paired with what it actually tells us.</p>
+    <p class="sub">Beyond the headline leaderboard, these analyses explain <i>why</i> the paradigms behave the way they do — each grounded in the paper's per-task results.</p>
 
-    <div class="anitem reveal">
-      <div class="anfig"><img src="static/images/fame_qualitative_scheme_examples.png" alt="Qualitative scheme examples"></div>
+    <div class="anitem solo reveal">
       <div class="antext">
-        <span class="pill">Qualitative · adaptation schemes</span>
-        <h3>How the four families fail differently</h3>
-        <p>Side-by-side predictions expose distinct failure signatures: SAM-based models produce sharp but sometimes over-confident masks, CLIP-based methods localise coarsely yet abstain more readily, and MLLM-driven pipelines hallucinate plausible-looking regions when the textual prompt under-specifies the ROI. The visual adaptation family tracks the ground-truth boundary most faithfully.</p>
+        <span class="pill">Mask generator</span>
+        <h3>A stronger generator is only as good as its support interface</h3>
+        <p>Upgrading the mask generator helps only when the surrounding pipeline can exploit it. CG-ICS improves from 0.501 (Qwen3-VL-4B) to 0.587 (MedSAM3 Gen.), but ProtoSAM moves only from 0.370 to 0.376 and degrades on Scatter (0.161 → 0.104). Text4Seg even drops from 0.095 to 0.086 when SAM3 is introduced. Pretrained representations, support guidance, and mask generation must work together.</p>
       </div>
     </div>
 
-    <div class="anitem rev reveal">
-      <div class="anfig"><img src="static/images/fame_qualitative_medplib_adaptations.png" alt="MedPLIB adaptation variants"></div>
+    <div class="anitem solo reveal">
       <div class="antext">
-        <span class="pill">MLLM · adaptation variants</span>
-        <h3>How you adapt an MLLM matters more than which one</h3>
-        <p>Within a single MLLM backbone, swapping the adaptation strategy changes the mask far more than swapping the base model. LoRA-style visual adaptation recovers usable boundaries, whereas prompt-only variants drift — reinforcing the paper's central claim that <b>exploitation of support examples</b>, not raw model scale, drives few-shot success.</p>
+        <span class="pill">Same backbone · different interface</span>
+        <h3>How spatial information becomes a mask matters more than the MLLM</h3>
+        <p>With the same LLaVA-1.5-7B backbone, LENS reaches 0.169 average DSC versus 0.107 for F-LMM — a gap of 0.121 vs. 0.033 on Small and 0.094 vs. 0.014 on Scatter, but only 0.289 vs. 0.265 on Large. Text4Seg, which generates mask representations autoregressively, reaches 0.095, whereas LISA and GLaMM, which predict segmentation embeddings for dedicated decoders, reach 0.259 and 0.250.</p>
       </div>
     </div>
 
-    <div class="anitem reveal">
-      <div class="anfig"><img src="static/images/fame_iid_family_score_distribution.png" alt="Family score distribution"></div>
+    <div class="anitem solo reveal">
       <div class="antext">
-        <span class="pill">Distribution · by family</span>
-        <h3>Averages hide the variance</h3>
-        <p>The per-family score distributions are wide and heavy-tailed: a family's mean Dice is a poor predictor of its worst-case behaviour. Specialists cluster tightly, while foundation-model families show long low-Dice tails on the harder anatomies — a reliability gap that a single leaderboard number cannot surface.</p>
+        <span class="pill">Same SAM2 · different specificity</span>
+        <h3>Accurate delineation and absence rejection come apart</h3>
+        <p>SANSA and MedPro both build on SAM2, yet SANSA leads on DSC (0.378 vs. 0.314) while MedPro leads on specificity (0.359 vs. 0.020). On Small, SANSA reaches 0.298 DSC with 0.002 Spe., compared with 0.144 DSC and 0.403 Spe. for MedPro; on Scatter, 0.144/0.064 versus 0.129/0.653. Future methods must decide <i>whether</i> the lesion is present before generating a mask.</p>
       </div>
     </div>
 
-    <div class="anitem rev reveal">
-      <div class="anfig"><img src="static/images/fame_iid_anatomy_best_margin.png" alt="Best-method margin by anatomy"></div>
+    <div class="anitem solo reveal">
       <div class="antext">
-        <span class="pill">Per-anatomy · winner margin</span>
-        <h3>No family wins everywhere</h3>
-        <p>The margin between the best and second-best method flips sign across anatomies. Where boundaries are texture-rich (skin, colon) SAM-based methods dominate; on low-contrast targets (brain, lung lesions) the gap narrows and specialists or CLIP-LoRA close in. This is exactly why FAME reports <b>task-level macro-averages</b> instead of letting large datasets dominate.</p>
+        <span class="pill">Support size</span>
+        <h3>Additional annotations can trade one ability for another</h3>
+        <p>Tyche improves substantially on FAME-Large (35.4% → 65.0% DSC) and surpasses CG-ICS at 10 shots despite trailing it at 1 shot. SegGPT gains overall DSC as K grows but loses specificity, while INSID3 improves specificity by 31.6 pp with almost unchanged DSC — reaching 98.2% Spe. but only 1.9% DSC on Small at 10 shots. More supports do not automatically mean better lesion localization.</p>
       </div>
     </div>
 
-    <div class="anitem reveal">
-      <div class="anfig"><img src="static/images/fame_method_adaptation_matrix.png" alt="Method adaptation matrix"></div>
+    <div class="anitem solo reveal">
       <div class="antext">
-        <span class="pill">Method × adaptation</span>
-        <h3>A map of what actually helps</h3>
-        <p>The method-by-strategy matrix makes the interaction explicit: parameter-update adaptation lifts almost every backbone, while interface-only prompting is hit-or-miss. The brightest cells concentrate where a capable visual backbone meets a genuine support-exploiting adapter — a compact recipe for practitioners.</p>
+        <span class="pill">Cross-dataset support</span>
+        <h3>Domain shift is not the only obstacle</h3>
+        <p>Replacing target-domain support with source-domain examples does not always degrade performance: CG-ICS and ProxyCLIP improve by 2.82 and 8.00 pp on average, although the gains vary across dataset pairs, while MedPro drops by 10.24 pp. All methods perform poorly on Retinal→DDR under both in-domain and cross-domain support, showing that poor transfer is not explained by domain shift alone.</p>
       </div>
     </div>
 
-    <div class="anitem rev reveal">
-      <div class="anfig"><img src="static/images/fame_ood_param_update_ranked_lollipop.png" alt="OOD parameter-update transfer"></div>
+    <div class="anitem solo reveal">
       <div class="antext">
-        <span class="pill">OOD · covariate vs. semantic</span>
-        <h3>Semantic shift is the real frontier</h3>
-        <p>Ranked out-of-distribution transfer separates two very different challenges: adapting to a new <i>imaging domain</i> (covariate shift) is largely solved, but transferring to a previously <i>unseen ROI</i> (semantic shift) collapses performance for nearly every method. The gap between the two bars is FAME's clearest open problem.</p>
+        <span class="pill">Efficiency</span>
+        <h3>More GPU memory does not buy better segmentation</h3>
+        <p>The paper's efficiency analysis finds no consistent relationship between GPU memory consumption and DSC. Larger or more heavily adapted models do not reliably outperform lighter pipelines, reinforcing that <i>how</i> pretrained models and support annotations are used matters more than raw capacity.</p>
       </div>
     </div>
   </div>
@@ -351,9 +381,9 @@
     <p class="sub">If you use FAME, please cite our paper.</p>
     <div class="bibtex reveal">
       <button class="copybtn" id="copybtn" onclick="copyBib()">Copy</button>
-<pre id="bibtex-entry">@misc{liu2026benchmarkingfoundationlargelanguage,
-  title        = {Benchmarking Foundation and Large Language Models
-                  for Few-Shot Medical Image Segmentation},
+<pre id="bibtex-entry">@misc{liu2026benchmarkinglargemodelmethods,
+  title        = {Benchmarking Large-Model Methods
+                  for Few-Shot Lesion Segmentation},
   author       = {Jinghong Liu and Yuchuan Deng and Fanping Liu
                   and Meng Huang and Xirong Li},
   year         = {2026},
@@ -368,7 +398,7 @@
 
 <footer>
   <div class="container">
-    <p>FAME · Renmin University of China · <a href="https://arxiv.org/abs/2607.27856" target="_blank" rel="noopener">arXiv 2607.27856</a> · <a href="https://huggingface.co/datasets/Kimokcheon/FAME_benchmark" target="_blank" rel="noopener">🤗 Dataset</a> · <a href="https://github.com/rucerchui/FAME_code" target="_blank" rel="noopener">Code</a></p>
+    <p>FAME · Renmin University of China · <a href="https://arxiv.org/abs/2607.27856" target="_blank" rel="noopener">arXiv 2607.27856</a> · <a href="https://huggingface.co/datasets/Kimokcheon/FAME_benchmark" target="_blank" rel="noopener">🤗 Dataset</a> · <a href="https://github.com/Kimokcheon/FAME" target="_blank" rel="noopener">Code</a></p>
     <p style="margin-top:8px">Page template inspired by <a href="https://nerfies.github.io/" target="_blank" rel="noopener">Nerfies</a>. Content © the authors.</p>
   </div>
 </footer>

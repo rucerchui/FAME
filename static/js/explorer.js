@@ -5,13 +5,16 @@
   if(!grid || !S.length) return;
 
   const ORGAN_LABEL = {brain:'Brain',breast:'Breast',colon:'Colon',lung:'Lung',retina:'Retina',skin:'Skin',thyroid:'Thyroid'};
-  const state = {organ:'all', modality:'all', view:'overlay'};
+  const SUBSET_LABEL = {small:'FAME-Small',medium:'FAME-Medium',large:'FAME-Large',scatter:'FAME-Scatter'};
+  const state = {organ:'all', modality:'all', subset:'all', view:'overlay'};
 
   // build filter chips
   const organs = [...new Set(S.map(s=>s.organ))];
   const modalities = [...new Set(S.map(s=>s.modality))];
+  const subsets = ['small','medium','large','scatter'];
   const organBox = document.getElementById('organFilters');
   const modBox = document.getElementById('modalityFilters');
+  const subBox = document.getElementById('subsetFilters');
   organs.forEach(o=>{
     const b=document.createElement('button');b.className='chip';b.dataset.val=o;
     b.textContent=ORGAN_LABEL[o]||o;organBox.appendChild(b);
@@ -20,15 +23,20 @@
     const b=document.createElement('button');b.className='chip';b.dataset.val=m;
     b.textContent=m;modBox.appendChild(b);
   });
+  subsets.forEach(v=>{
+    const b=document.createElement('button');b.className='chip';b.dataset.val=v;
+    b.textContent=SUBSET_LABEL[v];subBox.appendChild(b);
+  });
 
   function base(ds){return 'static/samples/'+ds;}
   function cardHTML(s){
     const src = base(s.dataset)+'_'+state.view+'.jpg';
     const zoom = s.zoom ? '<span class="zoombadge" title="Cropped around the ROI">⤢ zoom</span>' : '';
     return `
-    <figure class="excard" data-organ="${s.organ}" data-modality="${s.modality}">
+    <figure class="excard" data-organ="${s.organ}" data-modality="${s.modality}" data-subset="${s.subset}">
       <div class="exthumb">
         <img src="${src}" alt="${s.name} ${state.view}" loading="lazy">
+        <span class="exsubset sub-${s.subset}">${SUBSET_LABEL[s.subset]}</span>
         <span class="exdot dot-${s.organ}"></span>
         ${zoom}
       </div>
@@ -43,7 +51,8 @@
 
   function render(){
     const list = S.filter(s=>(state.organ==='all'||s.organ===state.organ) &&
-                             (state.modality==='all'||s.modality===state.modality));
+                             (state.modality==='all'||s.modality===state.modality) &&
+                             (state.subset==='all'||s.subset===state.subset));
     grid.innerHTML = list.map(cardHTML).join('');
     const c=document.getElementById('expCount'); if(c) c.textContent=list.length;
     // re-observe for reveal
